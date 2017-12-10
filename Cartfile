@@ -1,0 +1,3 @@
+github "yannickl/FlowingMenu" >= 3.0.0
+github "jiecao-fm/SwiftTheme" == 0.4.0
+github "ViccAlexander/Chameleon"

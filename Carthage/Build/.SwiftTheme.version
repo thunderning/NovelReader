@@ -1,0 +1,18 @@
+{
+  "Mac" : [
+
+  ],
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "commitish" : "0.4.0",
+  "iOS" : [
+    {
+      "name" : "SwiftTheme",
+      "hash" : "658b2cad81b80b1e825f920d84307b7587a143f5dec601f2206e475cbb0b96c1"
+    }
+  ]
+}

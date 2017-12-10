@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D900CEEA1FD7E8C400B6420C /* FlowingMenu.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D900CEE91FD7E8C300B6420C /* FlowingMenu.framework */; };
+		D900CEED1FD7F16600B6420C /* SwiftTheme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D900CEEC1FD7F16600B6420C /* SwiftTheme.framework */; };
 		D922A2A31FD146AE00932B34 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D922A2A21FD146AE00932B34 /* AppDelegate.swift */; };
 		D922A2A51FD146AE00932B34 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D922A2A41FD146AE00932B34 /* ViewController.swift */; };
 		D922A2A81FD146AE00932B34 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D922A2A61FD146AE00932B34 /* Main.storyboard */; };
@@ -15,6 +17,9 @@
 		D922A2B01FD146AE00932B34 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D922A2AE1FD146AE00932B34 /* LaunchScreen.storyboard */; };
 		D922A2BB1FD146AE00932B34 /* NovelReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D922A2BA1FD146AE00932B34 /* NovelReaderTests.swift */; };
 		D922A2C61FD146AE00932B34 /* NovelReaderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D922A2C51FD146AE00932B34 /* NovelReaderUITests.swift */; };
+		D95BF75F1FDAAA43006A2893 /* Chameleon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D95BF75E1FDAAA43006A2893 /* Chameleon.framework */; };
+		D95BF7641FDAB893006A2893 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95BF7631FDAB893006A2893 /* MainMenuViewController.swift */; };
+		D95BF7661FDAB8B3006A2893 /* MainMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95BF7651FDAB8B3006A2893 /* MainMenuTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +40,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D900CEE91FD7E8C300B6420C /* FlowingMenu.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FlowingMenu.framework; path = Carthage/Build/iOS/FlowingMenu.framework; sourceTree = "<group>"; };
+		D900CEEC1FD7F16600B6420C /* SwiftTheme.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftTheme.framework; path = Carthage/Build/iOS/SwiftTheme.framework; sourceTree = "<group>"; };
 		D922A29F1FD146AE00932B34 /* NovelReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NovelReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D922A2A21FD146AE00932B34 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D922A2A41FD146AE00932B34 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -49,6 +56,9 @@
 		D922A2C11FD146AE00932B34 /* NovelReaderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NovelReaderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D922A2C51FD146AE00932B34 /* NovelReaderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovelReaderUITests.swift; sourceTree = "<group>"; };
 		D922A2C71FD146AE00932B34 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D95BF75E1FDAAA43006A2893 /* Chameleon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Chameleon.framework; path = Carthage/Build/iOS/Chameleon.framework; sourceTree = "<group>"; };
+		D95BF7631FDAB893006A2893 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
+		D95BF7651FDAB8B3006A2893 /* MainMenuTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +66,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D95BF75F1FDAAA43006A2893 /* Chameleon.framework in Frameworks */,
+				D900CEED1FD7F16600B6420C /* SwiftTheme.framework in Frameworks */,
+				D900CEEA1FD7E8C400B6420C /* FlowingMenu.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +89,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D900CEE81FD7E8C300B6420C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D95BF75E1FDAAA43006A2893 /* Chameleon.framework */,
+				D900CEEC1FD7F16600B6420C /* SwiftTheme.framework */,
+				D900CEE91FD7E8C300B6420C /* FlowingMenu.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D922A2961FD146AE00932B34 = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +106,7 @@
 				D922A2B91FD146AE00932B34 /* NovelReaderTests */,
 				D922A2C41FD146AE00932B34 /* NovelReaderUITests */,
 				D922A2A01FD146AE00932B34 /* Products */,
+				D900CEE81FD7E8C300B6420C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,6 +123,7 @@
 		D922A2A11FD146AE00932B34 /* NovelReader */ = {
 			isa = PBXGroup;
 			children = (
+				D95BF7621FDAB855006A2893 /* MainMenu */,
 				D922A2A21FD146AE00932B34 /* AppDelegate.swift */,
 				D922A2A41FD146AE00932B34 /* ViewController.swift */,
 				D922A2A61FD146AE00932B34 /* Main.storyboard */,
@@ -128,6 +153,15 @@
 			path = NovelReaderUITests;
 			sourceTree = "<group>";
 		};
+		D95BF7621FDAB855006A2893 /* MainMenu */ = {
+			isa = PBXGroup;
+			children = (
+				D95BF7631FDAB893006A2893 /* MainMenuViewController.swift */,
+				D95BF7651FDAB8B3006A2893 /* MainMenuTableViewCell.swift */,
+			);
+			path = MainMenu;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -138,6 +172,7 @@
 				D922A29B1FD146AE00932B34 /* Sources */,
 				D922A29C1FD146AE00932B34 /* Frameworks */,
 				D922A29D1FD146AE00932B34 /* Resources */,
+				D900CEEB1FD7E8CD00B6420C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -257,13 +292,37 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		D900CEEB1FD7E8CD00B6420C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/FlowingMenu.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/SwiftTheme.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Chameleon.framework",
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/FlowingMenu.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftTheme.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Chameleon.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		D922A29B1FD146AE00932B34 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D95BF7641FDAB893006A2893 /* MainMenuViewController.swift in Sources */,
 				D922A2A51FD146AE00932B34 /* ViewController.swift in Sources */,
 				D922A2A31FD146AE00932B34 /* AppDelegate.swift in Sources */,
+				D95BF7661FDAB8B3006A2893 /* MainMenuTableViewCell.swift in Sources */,
 				D922A2AB1FD146AE00932B34 /* NovelReader.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -432,6 +491,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UQ6H9JH3R9;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = NovelReader/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = thunderning.NovelReader;
@@ -447,6 +510,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UQ6H9JH3R9;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = NovelReader/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = thunderning.NovelReader;

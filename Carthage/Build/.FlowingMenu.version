@@ -1,0 +1,18 @@
+{
+  "Mac" : [
+
+  ],
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "commitish" : "3.0.0",
+  "iOS" : [
+    {
+      "name" : "FlowingMenu",
+      "hash" : "5acb94381037dd9effb179740391bc30feba9f0c7238c03d9fc75c5f57c7aae1"
+    }
+  ]
+}

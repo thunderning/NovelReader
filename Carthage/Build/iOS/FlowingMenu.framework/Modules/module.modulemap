@@ -1,0 +1,11 @@
+framework module FlowingMenu {
+  umbrella header "FlowingMenu.h"
+
+  export *
+  module * { export * }
+}
+
+module FlowingMenu.Swift {
+    header "FlowingMenu-Swift.h"
+    requires objc
+}
