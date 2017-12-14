@@ -32,6 +32,7 @@
 		D99CDDEF1FDE1E5000F46414 /* BookRankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99CDDEE1FDE1E5000F46414 /* BookRankViewController.swift */; };
 		D99CDDF11FDE21BC00F46414 /* BookRankTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99CDDF01FDE21BC00F46414 /* BookRankTableViewCell.swift */; };
 		D99CDDF31FDE231600F46414 /* BookRankItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99CDDF21FDE231600F46414 /* BookRankItem.swift */; };
+		D99CDDF61FDE58F000F46414 /* BookCategoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99CDDF51FDE58F000F46414 /* BookCategoryItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 		D99CDDEE1FDE1E5000F46414 /* BookRankViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookRankViewController.swift; sourceTree = "<group>"; };
 		D99CDDF01FDE21BC00F46414 /* BookRankTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookRankTableViewCell.swift; sourceTree = "<group>"; };
 		D99CDDF21FDE231600F46414 /* BookRankItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookRankItem.swift; sourceTree = "<group>"; };
+		D99CDDF51FDE58F000F46414 /* BookCategoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCategoryItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +151,7 @@
 		D922A2A11FD146AE00932B34 /* NovelReader */ = {
 			isa = PBXGroup;
 			children = (
+				D99CDDF41FDE58C100F46414 /* BookCategory */,
 				D99CDDE91FDD8BBA00F46414 /* BookRank */,
 				D99CDDD81FDD383200F46414 /* BookList */,
 				D99CDDD31FDD1B7100F46414 /* Bookcase */,
@@ -221,6 +224,14 @@
 				D99CDDF21FDE231600F46414 /* BookRankItem.swift */,
 			);
 			path = BookRank;
+			sourceTree = "<group>";
+		};
+		D99CDDF41FDE58C100F46414 /* BookCategory */ = {
+			isa = PBXGroup;
+			children = (
+				D99CDDF51FDE58F000F46414 /* BookCategoryItem.swift */,
+			);
+			path = BookCategory;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -384,6 +395,7 @@
 			files = (
 				D95BF7641FDAB893006A2893 /* MainMenuViewController.swift in Sources */,
 				D99CDDE61FDD693A00F46414 /* BookListTableViewCell.swift in Sources */,
+				D99CDDF61FDE58F000F46414 /* BookCategoryItem.swift in Sources */,
 				D922A2A51FD146AE00932B34 /* ViewController.swift in Sources */,
 				D99CDDF31FDE231600F46414 /* BookRankItem.swift in Sources */,
 				D99CDDDE1FDD38E100F46414 /* BookListDetailItem.swift in Sources */,
