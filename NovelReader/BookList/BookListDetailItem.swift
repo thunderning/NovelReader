@@ -7,7 +7,7 @@
 //
 
 import Foundation
-struct BookListDetailItem : Codable {
+struct BookListDetailbookItem : Codable {
     let _id:String
     let title:String
     let author:String
@@ -15,19 +15,26 @@ struct BookListDetailItem : Codable {
     let cover:String       //图片地址
     let majorCate:String   //主分类
     let minorCate:String   //分类
-    struct Rate : Codable{
-        let count:Int      //评分总数
-        let score:Double   //分数10分制
-        let isEffect:Bool
-    }
-    let rating:[Rate]
     let latelyFollower:Int  //追书人气
     let wordCount:Int       //字数
-    let serializeWordCount:Int //日更字数
     let retentionRatio:String  //留存率
-    let updated:String      //最后更新
-    let isSerial:Bool       //是否连载
-    let chaptersCount:Int   //总章节数
-    let lastChapter:String  //最新章节
-    let tags:[String]       //标签
+}
+
+struct BookListDetailbooksItem : Codable{
+    let book:BookListDetailbookItem
+    let comment:String
+}
+
+struct BookListDetailItem : Codable{
+    let _id:String
+    let title:String
+    struct Author : Codable {
+        let nickname:String
+    }
+    let author:Author
+    let decs:String
+    let gender:String
+    let collectorCount:Int
+    let total:Int
+    let books:[BookListDetailbooksItem]
 }

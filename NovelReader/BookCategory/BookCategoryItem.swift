@@ -7,9 +7,14 @@
 //
 
 import Foundation
+
 struct BookCategoryItem : Codable {
-    let _id:String
-    let title:String
-    let cover:String       //图片地址
-    let shortTitle:String
+    let name:String
+    let bookCount:String
+}
+
+struct BookCategorysItem : Codable {
+    let male:[BookCategoryItem]
+    let female:[BookCategoryItem]
+    let press:[BookCategoryItem]
 }
