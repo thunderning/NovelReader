@@ -13,6 +13,3 @@ struct BookCategoryItem : Codable {
     let cover:String       //图片地址
     let shortTitle:String
 }
-
-
-
