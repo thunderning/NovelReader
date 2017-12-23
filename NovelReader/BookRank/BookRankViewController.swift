@@ -9,6 +9,7 @@
 import UIKit
 import Segmentio
 import Chameleon
+import Foundation
 
 class BookRankViewController: UIViewController {
     @IBOutlet weak var tableVIew: UITableView!
