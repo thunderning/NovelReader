@@ -1,3 +1,4 @@
+github "Alamofire/Alamofire" "4.6.0"
 github "ViccAlexander/Chameleon" "2.2.0"
 github "Yalantis/Segmentio" "2.1.2"
 github "jiecao-fm/SwiftTheme" "0.4.0"
