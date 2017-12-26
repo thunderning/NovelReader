@@ -13,18 +13,22 @@ class ChapterType: NSObject {
     var content:[String] = []
     var title:String = ""
     var string:String = ""
+    var attributedKey:[NSAttributedStringKey:Any]
     let width = UIScreen.main.bounds.width - 20
-    let height = UIScreen.main.bounds.height - 20 - 20 - 25
-    init(sender:UIViewController, link:String , font:UIFont){
+    let height = UIScreen.main.bounds.height - 30 - 25
+    init(sender:UIViewController, link:String , attributedKey:[NSAttributedStringKey:Any] ){
         self.link = link
+        let font = (attributedKey[NSAttributedStringKey.font] as! UIFont).copy()
+        let paragragh = (attributedKey[NSAttributedStringKey.paragraphStyle] as! NSParagraphStyle).copy()
+        self.attributedKey = [NSAttributedStringKey.font:font , NSAttributedStringKey.paragraphStyle:paragragh]
         print(link)
         super.init()
         self.getContentString(sender: sender)
-        self.getContent(font)
+        self.splitContentString()
     }
     func getContentString(sender:UIViewController) -> Void {
         let semaphore = DispatchSemaphore(value: 0)
-        ConnectService().getChapterContent(sender: sender, link: link){ (data, response, error)  in
+        connectService.getChapterContent(sender: sender, link: link){ (data, response, error)  in
             //TODO:缺少错误提示
             if error != nil{
                 print(error)
@@ -44,16 +48,31 @@ class ChapterType: NSObject {
         }
         semaphore.wait()
     }
-    func getContent(_ font : UIFont) -> Void {
+    
+    func checkAttributedKey(attributedKey:[NSAttributedStringKey:Any]) -> Void {
+        if ((self.attributedKey[NSAttributedStringKey.font] as! UIFont) == (attributedKey[NSAttributedStringKey.font] as! UIFont)) && ((self.attributedKey[NSAttributedStringKey.paragraphStyle] as! NSParagraphStyle) == (attributedKey[NSAttributedStringKey.paragraphStyle] as! NSParagraphStyle)) {
+            return
+        }
+        else {
+            let font = (attributedKey[NSAttributedStringKey.font] as! UIFont).copy()
+            let paragragh = (attributedKey[NSAttributedStringKey.paragraphStyle] as! NSParagraphStyle).copy()
+            self.attributedKey = [NSAttributedStringKey.font:font , NSAttributedStringKey.paragraphStyle:paragragh]
+            splitContentString()
+        }
+    }
+    
+    func splitContentString() -> Void {
+        content.removeAll()
         string = string.replacingOccurrences(of: "\t", with: "")
-        while string != "" {
-            let i = findFirstPage(string,font)
-            content.append(String(string[..<String.Index.init(encodedOffset: i)]))
-            string = String(string[String.Index.init(encodedOffset: i)...])
+        var temp = string
+        while temp != "" {
+            let i = findFirstPage(temp)
+            content.append(String(temp[..<String.Index.init(encodedOffset: i)]))
+            temp = String(temp[String.Index.init(encodedOffset: i)...])
         }
     }
     //用二分法查找第一页
-    func findFirstPage(_ string:String,_ font:UIFont) -> Int {
+    func findFirstPage(_ string:String) -> Int {
 //        for i in string.enumerated() {
 //            let a = String(string[..<String.Index.init(encodedOffset: i.offset+1)])
 //            if a.heightWithFont(fixedWidth: width) >= height{
@@ -67,8 +86,8 @@ class ChapterType: NSObject {
         while left <= right {
             let a = String(string[..<String.Index.init(encodedOffset: mid+1)])
             let b = String(string[..<String.Index.init(encodedOffset: mid)])
-            if a.heightWithFont(font: font,fixedWidth: width) >= height{
-                if b.heightWithFont(font: font ,fixedWidth: width) < height{
+            if a.heightWithFont(attributedKey: attributedKey,fixedWidth: width) >= height{
+                if b.heightWithFont(attributedKey: attributedKey ,fixedWidth: width) < height{
                     return mid
                 }
                 else {
@@ -82,12 +101,13 @@ class ChapterType: NSObject {
         }
         return string.count
     }
+    
 }
 
 extension String {
     
-    func heightWithFont(font : UIFont = UIFont.systemFont(ofSize: 18), fixedWidth : CGFloat) -> CGFloat {
-        
+    func heightWithFont(attributedKey:[NSAttributedStringKey:Any], fixedWidth : CGFloat) -> CGFloat {
+    
         guard self.count > 0 && fixedWidth > 0 else {
             
             return 0
@@ -95,7 +115,7 @@ extension String {
         
         let size = CGSize(width: fixedWidth, height: CGFloat(10000))
         let text = self as NSString
-        let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font : font], context:nil)
+        let rect = text.boundingRect(with: size, options:.usesLineFragmentOrigin, attributes: attributedKey, context:nil)
         return rect.size.height
     }
     

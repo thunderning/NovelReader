@@ -12,16 +12,18 @@ import UIKit
 let API_URL = "http://api.zhuishushenqi.com/"
 let CHAPTER_URL = "http://chapterup.zhuishushenqi.com/chapter/"
 let STATICS_URL = "http://statics.zhuishushenqi.com/"
-let acceptEncoding: String = "gzip;q=1.0, compress;q=0.5"
-let acceptLanguage = Locale.preferredLanguages.prefix(6).enumerated().map { index, languageCode in
-    let quality = 1.0 - (Double(index) * 0.1)
-    return "\(languageCode);q=\(quality)"
-    }.joined(separator: ", ")
+let connectService = ConnectService()
+let device = UIDevice.current
 
 class ConnectService: NSObject {
-    func startService(sender:UIViewController,urlstr:String, completionHandler:@escaping (_ data:Data?,_ response:URLResponse?,_ error:Error?) -> Void){
-        let url: URL = URL(string:urlstr)!
-        //2.获得会话对象
+    let session:URLSession
+    override init() {
+        //super.init()
+        let acceptEncoding: String = "gzip;q=1.0, compress;q=0.5"
+        let acceptLanguage = Locale.preferredLanguages.prefix(6).enumerated().map { index, languageCode in
+            let quality = 1.0 - (Double(index) * 0.1)
+            return "\(languageCode);q=\(quality)"
+            }.joined(separator: ", ")
         let configuration = URLSessionConfiguration.default
         //修改user_agent，不知道为何使用默认会导致某些api错误
         configuration.httpAdditionalHeaders = [
@@ -29,7 +31,11 @@ class ConnectService: NSObject {
             "Accept-Language": acceptLanguage,
             "User-Agent": "Thunderning"
         ]
-        let session: URLSession = URLSession(configuration: configuration)
+        session = URLSession(configuration: configuration)
+    }
+    func startService(sender:UIViewController,urlstr:String, completionHandler:@escaping (_ data:Data?,_ response:URLResponse?,_ error:Error?) -> Void){
+        let url: URL = URL(string:urlstr)!
+        //2.获得会话对象
         //3.根据会话对象创建一个Task(发送请求）
         /*
          第一个参数：请求路径
@@ -94,7 +100,7 @@ class ConnectService: NSObject {
     //获取小说章节列表（根据小说id）
     func getChapterListByBook(sender:UIViewController,bookId:String,completionHandler:@escaping (_ data:Data?,_ response:URLResponse?,_ error:Error?) -> Void) -> Void {
          print(API_URL + "mix-atoc/\(bookId)?view=chapters")
-        startService(sender: sender, urlstr: "http://api.zhuishushenqi.com/toc/585994fce48a78bc2a8c571f?view=chapters", completionHandler: completionHandler)
+        startService(sender: sender, urlstr: API_URL + "mix-atoc/\(bookId)?view=chapters", completionHandler: completionHandler)
     }
     //获取小说章节列表（根据小说源id）
     func getChapterListByBookSource(sender:UIViewController,bookSourceId:String,completionHandler:@escaping (_ data:Data?,_ response:URLResponse?,_ error:Error?) -> Void) -> Void {

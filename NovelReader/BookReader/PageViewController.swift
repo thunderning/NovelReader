@@ -17,14 +17,20 @@ class PageViewController: UIViewController {
     
     var chapters:[ChapterType?] = []
     var links:ChapterListItem? = nil
-    var currentChapter:Int = 1
+    var currentChapter:Int = 0
+    var currentPage:Int = 0
     var bookSourceId:String = ""
     var bookId:String = ""
-    var font:UIFont = UIFont.systemFont(ofSize: 22)
+    var attributedKey:[NSAttributedStringKey:Any] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        contentView.font = font
+        //contentView.font = font
+        let font:UIFont = UIFont.systemFont(ofSize: 22)
+        let paragraghStyle:NSMutableParagraphStyle = NSMutableParagraphStyle()
+        paragraghStyle.lineSpacing = 3
+        attributedKey = [NSAttributedStringKey.font:font , NSAttributedStringKey.paragraphStyle:paragraghStyle]
+        device.isBatteryMonitoringEnabled = true
         setBookId(bookId: "50bff3ec209793513100001c")
     }
 
@@ -34,23 +40,31 @@ class PageViewController: UIViewController {
     }
     
     func setFont(font:UIFont) -> Void {
-        contentView.font = font
-        
+        attributedKey[NSAttributedStringKey.font] = font
+        chapters[currentChapter]?.checkAttributedKey(attributedKey: attributedKey)
+        setCurrentPage(currentPage)
+    }
+    
+    func setLineSpacing(lineSpacing:CGFloat) -> Void {
+        let t = attributedKey[NSAttributedStringKey.paragraphStyle] as! NSMutableParagraphStyle
+        t.lineSpacing = lineSpacing
+        chapters[currentChapter]?.checkAttributedKey(attributedKey: attributedKey)
+        setCurrentPage(currentPage)
     }
     
     func setBookId(bookId:String) -> Void {
         if self.bookId != bookId{
             self.bookId = bookId
             let s = DispatchSemaphore(value: 0)
-            ConnectService().getChapterListByBook(sender: self, bookId: bookId){ (data,response,error) in
+            connectService.getChapterListByBook(sender: self, bookId: bookId){ (data,response,error) in
                 if error != nil{
                     print(error)
                 }
                 else{
                     let decoder = JSONDecoder()
-                    print(response)
+                    //print(response)
                     if let json = try? decoder.decode(ChapterListItem.self, from: data!){
-                        print(json)
+                        //print(json)
                         self.links = json
                         self.chapters = Array.init(repeating: nil, count: json.mixToc.chapters.count)
                     }
@@ -64,17 +78,33 @@ class PageViewController: UIViewController {
     
     func setCurrentChapter(_ currentPage:Int = 0,currentChapter:Int) -> Void {
         self.currentChapter = currentChapter
+        //若章节缺失，则从api获取
         if chapters[currentChapter] == nil {
             let date = Date()
-            chapters[currentChapter] = ChapterType(sender: self, link: (links?.mixToc.chapters[currentChapter].link)!, font: font)
+            chapters[currentChapter] = ChapterType(sender: self, link: (links?.mixToc.chapters[currentChapter].link)!, attributedKey:attributedKey)
             let millionSecond = NSDate().timeIntervalSince(date)
             print("下载第\(currentChapter+1)章花费\(millionSecond)s")
         }
-        let c = chapters[currentChapter]
-        contentView.text = c?.content[currentPage]
-        pagesView.pagesCount = (c?.content.count)!
-        pagesView.currentPage = currentPage + 1
+        titleView.text = chapters[currentChapter]?.title
+        pagesView.pagesCount = (chapters[currentChapter]?.content.count)!
+        setCurrentPage(currentPage)
+    }
+    
+    func setCurrentPage(_ currentPage:Int = 0) -> Void{
+        if currentPage < (chapters[currentChapter]?.content.count)! {
+            self.currentPage = currentPage
+        }
+        else{
+            self.currentPage = 0
+        }
+        let c = chapters[self.currentChapter]
+        contentView.attributedText = NSAttributedString.init(string: (c?.content[self.currentPage])!, attributes: attributedKey)
+        pagesView.currentPage = self.currentPage + 1
         pagesView.update()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        timeView.text = formatter.string(from: Date())
+        batteryView.level = Int(device.batteryLevel*100)
     }
     /*
     // MARK: - Navigation

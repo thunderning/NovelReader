@@ -27,11 +27,11 @@ class BookReaderViewController: UIViewController {
     func splitString(string:String) -> NSAttributedString {
         for i in string.enumerated() {
             let a = String(string[..<String.Index.init(encodedOffset: i.offset+1)])
-            if a.heightWithFont(fixedWidth: label.frame.width) >= label.frame.height{
-                print(String(string[..<String.Index.init(encodedOffset: i.offset)]).heightWithFont(fixedWidth: label.frame.width))
-                let s = NSAttributedString(string: String(string[..<String.Index.init(encodedOffset: i.offset)]), attributes: [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 18)])
-                return s
-            }
+//            if a.heightWithFont(fixedWidth: label.frame.width) >= label.frame.height{
+//                print(String(string[..<String.Index.init(encodedOffset: i.offset)]).heightWithFont(fixedWidth: label.frame.width))
+//                let s = NSAttributedString(string: String(string[..<String.Index.init(encodedOffset: i.offset)]), attributes: [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 18)])
+//                return s
+//            }
         }
         return NSAttributedString()
     }
