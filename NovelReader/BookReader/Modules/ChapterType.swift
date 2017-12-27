@@ -15,7 +15,7 @@ class ChapterType: NSObject {
     var string:String = ""
     var attributedKey:[NSAttributedStringKey:Any]
     let width = UIScreen.main.bounds.width - 20
-    let height = UIScreen.main.bounds.height - 30 - 25
+    let height = UIScreen.main.bounds.height - 25 - 25
     init(sender:UIViewController, link:String , title:String , attributedKey:[NSAttributedStringKey:Any] ){
         self.link = link
         self.title = title
