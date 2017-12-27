@@ -16,8 +16,9 @@ class ChapterType: NSObject {
     var attributedKey:[NSAttributedStringKey:Any]
     let width = UIScreen.main.bounds.width - 20
     let height = UIScreen.main.bounds.height - 30 - 25
-    init(sender:UIViewController, link:String , attributedKey:[NSAttributedStringKey:Any] ){
+    init(sender:UIViewController, link:String , title:String , attributedKey:[NSAttributedStringKey:Any] ){
         self.link = link
+        self.title = title
         let font = (attributedKey[NSAttributedStringKey.font] as! UIFont).copy()
         let paragragh = (attributedKey[NSAttributedStringKey.paragraphStyle] as! NSParagraphStyle).copy()
         self.attributedKey = [NSAttributedStringKey.font:font , NSAttributedStringKey.paragraphStyle:paragragh]
@@ -38,7 +39,7 @@ class ChapterType: NSObject {
                 if let json = try? decoder.decode(ChapterItem.self, from: data!){
                     //print(json)
                     if json.ok {
-                        self.title = json.chapter.title
+                        //self.title = json.chapter.title
                         self.string = json.chapter.body
                     }
                 }
@@ -63,12 +64,13 @@ class ChapterType: NSObject {
     
     func splitContentString() -> Void {
         content.removeAll()
-        string = string.replacingOccurrences(of: "\t", with: "")
+        string = string.replacingOccurrences(of: " ", with: "")
+        string = string.replacingOccurrences(of: "\n", with: "\n\t")
         var temp = string
         while temp != "" {
             let i = findFirstPage(temp)
             content.append(String(temp[..<String.Index.init(encodedOffset: i)]))
-            temp = String(temp[String.Index.init(encodedOffset: i)...])
+            temp = String(temp[String.Index.init(encodedOffset: i)...]).trimmingCharacters(in: .whitespacesAndNewlines)
         }
     }
     //用二分法查找第一页
