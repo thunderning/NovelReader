@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 class ChapterType: NSObject {
-    var link:String
+    var link:String? = nil
     var content:[String] = []
     var title:String = ""
     var string:String = ""
@@ -27,9 +27,19 @@ class ChapterType: NSObject {
         self.getContentString(sender: sender)
         self.splitContentString()
     }
+    init(sender:UIViewController, string:String , title:String , attributedKey:[NSAttributedStringKey:Any] ){
+        //self.link = link
+        self.title = title
+        self.string = string
+        let font = (attributedKey[NSAttributedStringKey.font] as! UIFont).copy()
+        let paragragh = (attributedKey[NSAttributedStringKey.paragraphStyle] as! NSParagraphStyle).copy()
+        self.attributedKey = [NSAttributedStringKey.font:font , NSAttributedStringKey.paragraphStyle:paragragh]
+        super.init()
+        self.splitContentString()
+    }
     func getContentString(sender:UIViewController) -> Void {
         let semaphore = DispatchSemaphore(value: 0)
-        connectService.getChapterContent(sender: sender, link: link){ (data, response, error)  in
+        connectService.getChapterContent(sender: sender, link: link!){ (data, response, error)  in
             //TODO:缺少错误提示
             if error != nil{
                 print(error)
@@ -65,6 +75,7 @@ class ChapterType: NSObject {
     func splitContentString() -> Void {
         content.removeAll()
         string = string.replacingOccurrences(of: " ", with: "")
+        string = string.replacingOccurrences(of: "\t", with: "")
         string = string.replacingOccurrences(of: "\n", with: "\n\t")
         var temp = string
         while temp != "" {

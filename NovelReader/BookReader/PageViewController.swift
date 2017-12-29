@@ -51,6 +51,25 @@ class PageViewController: UIViewController {
         timeView.text = formatter.string(from: Date())
         batteryView.level = Int(device.batteryLevel*100)
     }
+    func setTheme(backgroundColor:UIColor,isNight:Bool) -> Void {
+        if !isNight {
+            self.view.backgroundColor = backgroundColor
+            self.batteryView.borderColor = UIColor.black
+            self.titleView.textColor = UIColor.darkGray
+            self.contentView.textColor = UIColor.black
+            self.timeView.textColor = UIColor.darkGray
+            self.pagesView.textColor = UIColor.darkGray
+        }
+        else {
+            self.view.backgroundColor = UIColor.flatNavyBlueColorDark()
+            self.contentView.textColor = UIColor.init(hexString: "#BFD2C7")
+            //self.contentView.textColor = UIColor.init(hexString: "#A1A5A7")
+            self.batteryView.borderColor = UIColor.init(hexString: "#BFC5C5")
+            self.titleView.textColor = UIColor.init(hexString: "#BFC5C5")
+            self.timeView.textColor = UIColor.init(hexString: "#BFC5C5")
+            self.pagesView.textColor = UIColor.init(hexString: "#BFC5C5")
+        }
+    }
     
 //    func setFont(font:UIFont) -> Void {
 //        attributedKey[NSAttributedStringKey.font] = font

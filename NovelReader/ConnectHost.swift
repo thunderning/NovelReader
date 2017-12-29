@@ -9,12 +9,6 @@
 import Foundation
 import UIKit
 
-let API_URL = "http://api.zhuishushenqi.com/"
-let CHAPTER_URL = "http://chapterup.zhuishushenqi.com/chapter/"
-let STATICS_URL = "http://statics.zhuishushenqi.com/"
-let connectService = ConnectService()
-let device = UIDevice.current
-
 class ConnectService: NSObject {
     let session:URLSession
     override init() {
@@ -90,16 +84,18 @@ class ConnectService: NSObject {
         
     }
     //获取小说信息
-    func getBookInformation(sender:UIViewController,completionHandler:@escaping (_ data:Data?,_ response:URLResponse?,_ error:Error?) -> Void) -> Void {
-        
+    func getBookInformation(sender:UIViewController,bookId:String,completionHandler:@escaping (_ data:Data?,_ response:URLResponse?,_ error:Error?) -> Void) -> Void {
+        print(API_URL + "book/\(bookId)")
+        startService(sender: sender, urlstr: API_URL + "book/\(bookId)", completionHandler: completionHandler)
     }
     //获取小说源列表
-    func getBookSources(sender:UIViewController,completionHandler:@escaping (_ data:Data?,_ response:URLResponse?,_ error:Error?) -> Void) -> Void {
-        
+    func getBookSources(sender:UIViewController,bookId:String,completionHandler:@escaping (_ data:Data?,_ response:URLResponse?,_ error:Error?) -> Void) -> Void {
+        //print(API_URL + "mix-atoc/\(bookId)?view=chapters")
+        startService(sender: sender, urlstr: API_URL + "atoc?book=\(bookId)&view=summary", completionHandler: completionHandler)
     }
     //获取小说章节列表（根据小说id）
     func getChapterListByBook(sender:UIViewController,bookId:String,completionHandler:@escaping (_ data:Data?,_ response:URLResponse?,_ error:Error?) -> Void) -> Void {
-         print(API_URL + "mix-atoc/\(bookId)?view=chapters")
+        //print(API_URL + "mix-atoc/\(bookId)?view=chapters")
         startService(sender: sender, urlstr: API_URL + "mix-atoc/\(bookId)?view=chapters", completionHandler: completionHandler)
     }
     //获取小说章节列表（根据小说源id）

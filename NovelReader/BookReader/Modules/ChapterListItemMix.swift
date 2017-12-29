@@ -7,20 +7,13 @@
 //
 
 import Foundation
-struct ChapterListItem:Codable {
+struct ChapterListItemMix:Codable {
     struct MT : Codable{
         let _id:String
         let book:String
         let chaptersCount1:Int
         let chaptersUpdated:String
-        
-        struct Chapter : Codable {
-            let title:String
-            let link:String
-            let unreadble:Bool
-        }
-        
-        let chapters:[Chapter]
+        let chapters:[LinkType]
         let updated:String
     }
     let mixToc:MT
