@@ -81,7 +81,7 @@ class SavedModalController {
         }
         object.chapters = NSOrderedSet.init(array: chapterArray)
         //保存
-        contextSave(info:object.description)
+        contextSave(info:"创建书源\(object.id!)")
     }
     
     static  func addChapterListInfo(linkType:LinkType) -> CoreChapterListInfo{
@@ -120,6 +120,10 @@ class SavedModalController {
         for i in links[chapterListArray.count..<links.count] {
             chapterListArray.append(addChapterListInfo(linkType: i))
         }
+//        for i in links.enumerated() {
+//            chapterListArray[i.offset].link = i.element.link
+//            chapterListArray[i.offset].title = i.element.title
+//        }
         object.chapterList = NSOrderedSet.init(array: chapterListArray)
         var chapterArray:[CoreChapterInfo] = object.chapters?.array as! [CoreChapterInfo]
         for k in content[..<chapterArray.count].enumerated(){
@@ -130,7 +134,21 @@ class SavedModalController {
         }
         object.chapters = NSOrderedSet.init(array: chapterArray)
         //保存
-        contextSave(info:object.description)
+        contextSave(info:"更新书源\(object.id!)")
+    }
+    static func saveChapter(sourceId:String,offset:Int,content:String){
+        //创建User对象
+        let temp = getBookSourceInfos(sourceId: sourceId)
+        if temp.count != 1 {
+            fatalError("save chapter failed")
+        }
+        let object = temp[0]
+        //对象赋值
+        var chapterArray:[CoreChapterInfo] = object.chapters?.array as! [CoreChapterInfo]
+        chapterArray[offset].content = content
+        object.chapters = NSOrderedSet.init(array: chapterArray)
+        //保存
+        contextSave(info:"更新书源\(object.id!)的第\(offset+1)章")
     }
     
 }

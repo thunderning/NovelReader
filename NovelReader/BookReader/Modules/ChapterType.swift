@@ -13,7 +13,7 @@ class ChapterType: NSObject {
     var content:[String] = []
     var title:String = ""
     var string:String = ""
-    var attributedKey:[NSAttributedStringKey:Any]
+    var attributedKey:[NSAttributedStringKey:Any]? = nil
     let width = UIScreen.main.bounds.width - 20
     let height = UIScreen.main.bounds.height - 25 - 25
     init(sender:UIViewController, link:String , title:String , attributedKey:[NSAttributedStringKey:Any] ){
@@ -27,15 +27,11 @@ class ChapterType: NSObject {
         self.getContentString(sender: sender)
         self.splitContentString()
     }
-    init(sender:UIViewController, string:String , title:String , attributedKey:[NSAttributedStringKey:Any] ){
+    init(sender:UIViewController, string:String , title:String ){
         //self.link = link
         self.title = title
         self.string = string
-        let font = (attributedKey[NSAttributedStringKey.font] as! UIFont).copy()
-        let paragragh = (attributedKey[NSAttributedStringKey.paragraphStyle] as! NSParagraphStyle).copy()
-        self.attributedKey = [NSAttributedStringKey.font:font , NSAttributedStringKey.paragraphStyle:paragragh]
         super.init()
-        self.splitContentString()
     }
     func getContentString(sender:UIViewController) -> Void {
         let semaphore = DispatchSemaphore(value: 0)
@@ -61,10 +57,7 @@ class ChapterType: NSObject {
     }
     
     func checkAttributedKey(attributedKey:[NSAttributedStringKey:Any]) -> Void {
-        if ((self.attributedKey[NSAttributedStringKey.font] as! UIFont) == (attributedKey[NSAttributedStringKey.font] as! UIFont)) && ((self.attributedKey[NSAttributedStringKey.paragraphStyle] as! NSParagraphStyle) == (attributedKey[NSAttributedStringKey.paragraphStyle] as! NSParagraphStyle)) {
-            return
-        }
-        else {
+        if self.attributedKey == nil || ((self.attributedKey![NSAttributedStringKey.font] as! UIFont) != (attributedKey[NSAttributedStringKey.font] as! UIFont)) || ((self.attributedKey![NSAttributedStringKey.paragraphStyle] as! NSParagraphStyle) != (attributedKey[NSAttributedStringKey.paragraphStyle] as! NSParagraphStyle)){
             let font = (attributedKey[NSAttributedStringKey.font] as! UIFont).copy()
             let paragragh = (attributedKey[NSAttributedStringKey.paragraphStyle] as! NSParagraphStyle).copy()
             self.attributedKey = [NSAttributedStringKey.font:font , NSAttributedStringKey.paragraphStyle:paragragh]
@@ -99,8 +92,8 @@ class ChapterType: NSObject {
         while left <= right {
             let a = String(string[..<String.Index.init(encodedOffset: mid+1)])
             let b = String(string[..<String.Index.init(encodedOffset: mid)])
-            if a.heightWithFont(attributedKey: attributedKey,fixedWidth: width) >= height{
-                if b.heightWithFont(attributedKey: attributedKey ,fixedWidth: width) < height{
+            if a.heightWithFont(attributedKey: attributedKey!,fixedWidth: width) >= height{
+                if b.heightWithFont(attributedKey: attributedKey! ,fixedWidth: width) < height{
                     return mid
                 }
                 else {

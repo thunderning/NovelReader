@@ -15,7 +15,7 @@ class BookReaderViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var settingBar: SettingView!
     @IBOutlet weak var brightnessBar: UISlider!
-    
+    var downloadingView: UILabel!
     
     var chapters:[ChapterType?] = []
     var links:[LinkType] = []
@@ -40,6 +40,13 @@ class BookReaderViewController: UIViewController {
         attributedKey = [NSAttributedStringKey.font:font , NSAttributedStringKey.paragraphStyle:paragraghStyle]
         //允许监视电池
         device.isBatteryMonitoringEnabled = true
+        //初始化下载显示
+        downloadingView = UILabel(frame: CGRect(x: (UIScreen.main.bounds.width-110)/2, y: UIScreen.main.bounds.height - 28, width: 140, height: 20))
+        downloadingView.text = ""
+        downloadingView.textColor = UIColor.lightGray
+        downloadingView.font = UIFont.systemFont(ofSize: 14)
+        view.addSubview(downloadingView)
+        self.view.sendSubview(toBack: self.downloadingView)
         //初始化页面管理
         pagesController.view.frame = self.view.frame
         pagesController.dataSource = self
@@ -51,16 +58,22 @@ class BookReaderViewController: UIViewController {
         brightnessBar.value = Float(UIScreen.main.brightness)
         //夜间/日间 按钮
         changeNightButton()
+        //设置菜单
+        
         //测试
 //        SavedModalController.context.delete(SavedModalController.getBookInfos()[0])
 //        //print(SavedModalController.getBookInfos())
 //        SavedModalController.addBookInfo(bookId: "57bad28103650d4213a34cdc", name: "六界封神", latestTitle: "默认卷 第1891章        找人帮忙", sourceId: nil, currentChapter: 0)
 //        print(SavedModalController.getBookInfos())
         setBookId(bookId: "57bad28103650d4213a34cdc")
+        //print(chapters)
 //        print("===========================================\n")
 //        print(SavedModalController.getBookSourceInfos()[0].chapters?.array as! [CoreChapterInfo])
 //        print("=============================================")
+        
     }
+    
+    
     func setFont(font:UIFont) -> Void {
         attributedKey[NSAttributedStringKey.font] = font
         defaultStandard.set(font.pointSize, forKey: ReaderInfo.fontSize)
@@ -116,7 +129,10 @@ class BookReaderViewController: UIViewController {
                 s1.wait()
             }
             //print(SavedModalController.getBookInfos())
+            let t = Date()
             setBookSourceId(bookSourceId: self.bookSourceId!)
+            let millionSecond = NSDate().timeIntervalSince(t)
+            print("读取全部章节花费\(millionSecond)s")
             setCurrentChapter(currentChapter)
             setCurrentPage(currentPage)
         }
@@ -160,39 +176,52 @@ class BookReaderViewController: UIViewController {
                 self.links.append(LinkType(title: i.title!, link: i.link!))
             }
             self.chapters = []
+            
             for j in sourceIdInfo[0].chapters?.array as! [CoreChapterInfo]{
                 if j.content == nil{
                     self.chapters.append(nil)
                 }
                 else{
-                    self.chapters.append(ChapterType(sender: self, string: j.content!, title: self.links[self.chapters.count].title, attributedKey: self.attributedKey))
+                    self.chapters.append(ChapterType(sender: self, string: j.content!, title: self.links[self.chapters.count].title))
                 }
             }
+            
         }
+        let bookInfo = SavedModalController.getBookInfos(bookId: bookId)
+        if bookInfo.count == 0 || bookInfo.count > 1{
+            fatalError("书籍\(bookId)没有本地信息")
+        }
+        else{
+            bookInfo[0].sourceId = self.bookSourceId
+            SavedModalController.contextSave()
+        }
+        
     }
     
     func setCurrentChapter(_ currentChapter:Int) -> Void {
         self.currentChapter = currentChapter
         //若章节缺失，则从api获取
         if chapters[currentChapter] == nil {
+            print("第\(currentChapter+1)章缺失")
             let date = Date()
             chapters[currentChapter] = ChapterType(sender: self, link: links[currentChapter].link,title:links[currentChapter].title, attributedKey:attributedKey)
             let millionSecond = NSDate().timeIntervalSince(date)
             print("下载第\(currentChapter+1)章花费\(millionSecond)s")
+            var c:[String?] = []
+            for i in self.chapters{
+                if i == nil{
+                    c.append(nil)
+                }
+                else{
+                    c.append(i!.string)
+                }
+            }
+            SavedModalController.updateBookSourceInfo(sourceId: bookSourceId!, links: self.links, content: c)
         }
         else{
             chapters[currentChapter]?.checkAttributedKey(attributedKey: attributedKey)
         }
-        var c:[String?] = []
-        for i in self.chapters{
-            if i == nil{
-                c.append(nil)
-            }
-            else{
-                c.append(i!.string)
-            }
-        }
-        SavedModalController.updateBookSourceInfo(sourceId: bookSourceId!, links: self.links, content: c)
+        
         let bookInfo = SavedModalController.getBookInfos(bookId: bookId)
         if bookInfo.count == 0 || bookInfo.count > 1{
             fatalError("书籍\(bookId)没有本地信息")
@@ -229,6 +258,7 @@ class BookReaderViewController: UIViewController {
     //显示/隐藏菜单
     @IBAction func tapClick(){
         //print("按钮被点击")
+        //downloadingView.text = "缓存结束"
         if isSettingShow{
             isSettingShow = !isSettingShow
             UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5, delay: 0, options: [], animations: {() in
@@ -336,17 +366,89 @@ class BookReaderViewController: UIViewController {
         current.setTheme(backgroundColor: pageBackColor!, isNight: isNight)
         self.view.sendSubview(toBack: self.pagesController.view)
     }
+    //缓存全部章节
+    @IBAction func downloadAll(_ button:UIButton){
+        let downloadQ = DispatchQueue(label: "thunderning.download")
+        downloadQ.async {
+            for i in self.chapters.enumerated(){
+                if i.element == nil{
+                    let date = Date()
+                    self.chapters[i.offset] = ChapterType(sender: self, link: self.links[i.offset].link,title:self.links[i.offset].title, attributedKey:self.attributedKey)
+                    SavedModalController.saveChapter(sourceId: self.bookSourceId!, offset: i.offset, content: (self.chapters[i.offset]?.string)!)
+                    let millionSecond = NSDate().timeIntervalSince(date)
+                    print("缓存第\(i.offset+1)章花费\(millionSecond)s")
+                    DispatchQueue.main.async {
+                        self.downloadingView.text = "正在缓存..\(i.offset+1)/\(self.chapters.count)"
+                    }
+                }
+            }
+            DispatchQueue.main.async {
+                self.downloadingView.text = "缓存完毕"
+                sleep(3)
+                self.downloadingView.text = ""
+            }
+            
+        }
+    }
     
+    //回退入口
+    @IBAction func chapterChosenReturnToReader(segue:UIStoryboardSegue){
+        let data = segue.source as! ChapterChosenViewController
+        if data.isReversed {
+            data.links.reverse()
+        }
+        if data.links.count == self.links.count{
+            self.links = data.links
+            for _ in 0 ..< (data.links.count - self.links.count) {
+                self.chapters.append(nil)
+            }
+            var c:[String?] = []
+            for i in self.chapters{
+                if i == nil{
+                    c.append(nil)
+                }
+                else{
+                    c.append(i!.string)
+                }
+            }
+            SavedModalController.updateBookSourceInfo(sourceId: self.bookSourceId!, links: self.links, content: c)
+        }
+        if data.selectChapter != nil{
+            self.setCurrentChapter(data.selectChapter!)
+            self.setCurrentPage()
+        }
+        isMenuShow = false
+        isSettingShow = false
+    }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    @IBAction func SourceChosenReturnToReader(segue:UIStoryboardSegue){
+        let data = segue.source as! SourceChosenViewController
+        if data.selectSource != self.bookSourceId {
+            self.setBookSourceId(bookSourceId: data.selectSource!)
+            self.setCurrentChapter(0)
+            self.setCurrentPage()
+        }
+        isMenuShow = false
+        isSettingShow = false
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "ShowChapterChosen" {
+            let controller = segue.destination as! ChapterChosenViewController
+            controller.links = self.links
+            controller.backColor = self.pageBackColor
+            controller.sourceId = self.bookSourceId!
+            controller.currentChapter = self.currentChapter
+        }
+        else if segue.identifier == "ShowSourceChosen" {
+            let controller = segue.destination as! SourceChosenViewController
+            controller.bookId = self.bookId
+            controller.backColor = self.pageBackColor
+            controller.selectSource = self.bookSourceId
+        }
     }
-    */
 
 }
 
@@ -380,7 +482,6 @@ extension BookReaderViewController : UIPageViewControllerDelegate,UIPageViewCont
             //print(currentPage)
             return getPageControllerByCurrentPage(currentPage + 1)
         }
-        
     }
 }
 
