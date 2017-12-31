@@ -22,5 +22,5 @@ extension CoreBookInfo {
     @NSManaged public var latestTitle: String?
     @NSManaged public var name: String?
     @NSManaged public var sourceId: String?
-
+    @NSManaged public var image: String?
 }

@@ -20,7 +20,7 @@ struct BookDetailItem : Codable {
         let score:Double   //分数10分制
         let isEffect:Bool
     }
-    let rating:[Rate]
+    let rating:Rate
     let latelyFollower:Int  //追书人气
     let wordCount:Int       //字数
     let serializeWordCount:Int //日更字数

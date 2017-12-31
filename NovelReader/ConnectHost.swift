@@ -112,4 +112,9 @@ class ConnectService: NSObject {
         l = l.replacingOccurrences(of: "&", with: "%26")
         startService(sender: sender, urlstr: CHAPTER_URL + l, completionHandler: completionHandler)
     }
+    //获取图片
+    func getImage(sender:UIViewController,urlstring:String,completionHandler:@escaping (_ data:Data?,_ response:URLResponse?,_ error:Error?) -> Void) -> Void {
+        print(STATICS_URL + urlstring)
+        startService(sender: sender, urlstr: STATICS_URL + urlstring, completionHandler: completionHandler)
+    }
 }

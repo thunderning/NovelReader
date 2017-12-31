@@ -62,16 +62,12 @@ class BookReaderViewController: UIViewController {
         //设置菜单
         
         //测试
-//        SavedModalController.context.delete(SavedModalController.getBookInfos()[0])
-//        //print(SavedModalController.getBookInfos())
-//        SavedModalController.addBookInfo(bookId: "57bad28103650d4213a34cdc", name: "六界封神", latestTitle: "默认卷 第1891章        找人帮忙", sourceId: nil, currentChapter: 0)
-//        print(SavedModalController.getBookInfos())
-        setBookId(bookId: "57bad28103650d4213a34cdc")
-        //print(chapters)
-//        print("===========================================\n")
-//        print(SavedModalController.getBookSourceInfos()[0].chapters?.array as! [CoreChapterInfo])
-//        print("=============================================")
-        
+        HUD.show(.labeledProgress(title: nil, subtitle: "第一次打开书籍需要较长时间初始化"))
+        DispatchQueue.main.async {
+            // ...and once it finishes we flash the HUD for a second.
+            self.setBookId(bookId: self.bookId)
+            HUD.flash(.success, delay: 1.0)
+        }
     }
     
     
@@ -91,8 +87,6 @@ class BookReaderViewController: UIViewController {
     }
     
     func setBookId(bookId:String) -> Void {
-        if self.bookId != bookId{
-            self.bookId = bookId
             let bookInfo = SavedModalController.getBookInfos(bookId: bookId)
             if bookInfo.count == 0 || bookInfo.count > 1{
                 fatalError("书籍\(bookId)没有本地信息")
@@ -146,7 +140,6 @@ class BookReaderViewController: UIViewController {
             print("读取全部章节花费\(millionSecond)s")
             setCurrentChapter(currentChapter)
             setCurrentPage(currentPage)
-        }
     }
     
     func setBookSourceId(bookSourceId:String) -> Void {
@@ -220,41 +213,40 @@ class BookReaderViewController: UIViewController {
     }
     
     func setCurrentChapter(_ currentChapter:Int) -> Void {
-        
-        //若章节缺失，则从api获取
-        if chapters[currentChapter] == nil {
-            print("第\(currentChapter+1)章缺失")
-            let date = Date()
-            chapters[currentChapter] = ChapterType(sender: self, link: links[currentChapter].link,title:links[currentChapter].title, attributedKey:attributedKey)
-            if chapters[currentChapter]?.string == "" {
-                chapters[currentChapter] = nil
-                return
-            }
-            let millionSecond = NSDate().timeIntervalSince(date)
-            print("下载第\(currentChapter+1)章花费\(millionSecond)s")
-            var c:[String?] = []
-            for i in self.chapters{
-                if i == nil{
-                    c.append(nil)
+            //若章节缺失，则从api获取
+            if self.chapters[currentChapter] == nil {
+                print("第\(currentChapter+1)章缺失")
+                let date = Date()
+                self.chapters[currentChapter] = ChapterType(sender: self, link: self.links[currentChapter].link,title:self.links[currentChapter].title, attributedKey:self.attributedKey)
+                if self.chapters[currentChapter]?.string == "" {
+                    self.chapters[currentChapter] = nil
+                    return
                 }
-                else{
-                    c.append(i!.string)
+                let millionSecond = NSDate().timeIntervalSince(date)
+                print("下载第\(currentChapter+1)章花费\(millionSecond)s")
+                var c:[String?] = []
+                for i in self.chapters{
+                    if i == nil{
+                        c.append(nil)
+                    }
+                    else{
+                        c.append(i!.string)
+                    }
                 }
+                SavedModalController.updateBookSourceInfo(sourceId: self.bookSourceId!, links: self.links, content: c)
             }
-            SavedModalController.updateBookSourceInfo(sourceId: bookSourceId!, links: self.links, content: c)
-        }
-        else{
-            chapters[currentChapter]?.checkAttributedKey(attributedKey: attributedKey)
-        }
-        self.currentChapter = currentChapter
-        let bookInfo = SavedModalController.getBookInfos(bookId: bookId)
-        if bookInfo.count == 0 || bookInfo.count > 1{
-            fatalError("书籍\(bookId)没有本地信息")
-        }
-        else{
-            bookInfo[0].currentChapter = Int32(currentChapter)
-            SavedModalController.contextSave(info: "currentChapter")
-        }
+            else{
+                self.chapters[currentChapter]?.checkAttributedKey(attributedKey: self.attributedKey)
+            }
+            self.currentChapter = currentChapter
+            let bookInfo = SavedModalController.getBookInfos(bookId: self.bookId)
+            if bookInfo.count == 0 || bookInfo.count > 1{
+                fatalError("书籍\(self.bookId)没有本地信息")
+            }
+            else{
+                bookInfo[0].currentChapter = Int32(currentChapter)
+                SavedModalController.contextSave(info: "currentChapter")
+            }
     }
     
     func setCurrentPage(_ currentPage:Int = 0) -> Void{
@@ -394,7 +386,7 @@ class BookReaderViewController: UIViewController {
     //缓存全部章节
     @IBAction func downloadAll(_ button:UIButton){
         let reachability = Reachability()
-        if reachability?.connection == .none {
+        if reachability?.connection == Reachability.Connection.none {
             self.downloadingView.text = "无网络连接"
             return
         }

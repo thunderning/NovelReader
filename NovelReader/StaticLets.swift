@@ -11,7 +11,7 @@ import UIKit
 
 let API_URL:String = "http://api.zhuishushenqi.com/"
 let CHAPTER_URL:String = "http://chapterup.zhuishushenqi.com/chapter/"
-let STATICS_URL:String = "http://statics.zhuishushenqi.com/"
+let STATICS_URL:String = "http://statics.zhuishushenqi.com"
 let connectService = ConnectService()
 let device = UIDevice.current
 let defaultStandard = UserDefaults.standard

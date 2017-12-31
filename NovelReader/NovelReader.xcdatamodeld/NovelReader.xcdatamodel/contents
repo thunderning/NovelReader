@@ -3,6 +3,7 @@
     <entity name="CoreBookInfo" representedClassName="CoreBookInfo" syncable="YES">
         <attribute name="currentChapter" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="latestTitle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sourceId" optional="YES" attributeType="String" syncable="YES"/>
@@ -20,7 +21,7 @@
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="CoreBookInfo" positionX="-380" positionY="72" width="128" height="118"/>
+        <element name="CoreBookInfo" positionX="-380" positionY="72" width="128" height="133"/>
         <element name="CoreBookSourceInfo" positionX="-9" positionY="36" width="128" height="88"/>
         <element name="CoreChapterInfo" positionX="133" positionY="144" width="128" height="58"/>
         <element name="CoreChapterListInfo" positionX="-171" positionY="144" width="128" height="73"/>

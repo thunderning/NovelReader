@@ -20,7 +20,7 @@ class SavedModalController {
             fatalError("不能保存：\(error)")
         }
     }
-    static func addBookInfo(bookId:String,name:String,latestTitle:String,sourceId:String?,currentChapter:Int32) -> Void {
+    static func addBookInfo(bookId:String,name:String,latestTitle:String,sourceId:String?,currentChapter:Int32,image:String) -> Void {
         
         //创建User对象
         let object = NSEntityDescription.insertNewObject(forEntityName: "CoreBookInfo",
@@ -31,6 +31,7 @@ class SavedModalController {
         object.latestTitle = latestTitle
         object.name = name
         object.sourceId = sourceId
+        object.image = image
         //保存
         contextSave(info:object.description)
     }
@@ -150,5 +151,10 @@ class SavedModalController {
         //保存
         contextSave(info:"更新书源\(object.id!)的第\(offset+1)章")
     }
+    static func deleteObject(obj:NSManagedObject){
+        context.delete(obj)
+        contextSave(info: "删除后")
+    }
+    
     
 }
