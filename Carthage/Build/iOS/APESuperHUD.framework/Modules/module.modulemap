@@ -1,0 +1,11 @@
+framework module APESuperHUD {
+  umbrella header "APESuperHUD.h"
+
+  export *
+  module * { export * }
+}
+
+module APESuperHUD.Swift {
+    header "APESuperHUD-Swift.h"
+    requires objc
+}

@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import PKHUD
+
 class ChapterType: NSObject {
     var link:String? = nil
     var content:[String] = []
@@ -36,9 +38,10 @@ class ChapterType: NSObject {
     func getContentString(sender:UIViewController) -> Void {
         let semaphore = DispatchSemaphore(value: 0)
         connectService.getChapterContent(sender: sender, link: link!){ (data, response, error)  in
-            //TODO:缺少错误提示
             if error != nil{
-                print(error)
+                DispatchQueue.main.async {
+                    HUD.flash(.labeledError(title: "网络错误", subtitle: "请更改网络状态重试"), delay: 1.0)
+                }
             }
             else{
                 let decoder = JSONDecoder()
@@ -47,6 +50,11 @@ class ChapterType: NSObject {
                     if json.ok {
                         //self.title = json.chapter.title
                         self.string = json.chapter.body
+                    }
+                }
+                else{
+                    DispatchQueue.main.async {
+                        HUD.flash(.labeledError(title: "服务器编码错误", subtitle: nil), delay: 1)
                     }
                 }
             }

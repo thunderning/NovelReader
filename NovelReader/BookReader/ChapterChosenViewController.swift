@@ -7,6 +7,8 @@
 //
 
 import UIKit
+//import APESuperHUD
+import PKHUD
 
 class ChapterChosenViewController: UIViewController {
     @IBOutlet weak var reverseButton: UIButton!
@@ -27,16 +29,23 @@ class ChapterChosenViewController: UIViewController {
             let s1 = DispatchSemaphore(value: 0)
             connectService.getChapterListByBookSource(sender: self!, bookSourceId:(self?.sourceId)!){ (data,response,error) in
                 if error != nil{
-                    print(error)
+                    DispatchQueue.main.async {
+                        HUD.flash(.labeledError(title: "网络错误", subtitle: "请更改网络状态重试"), delay: 1.0)
+                    }
                 }
                 else{
                     let decoder = JSONDecoder()
-                    print(response)
+                    //print(response)
                     if let json = try? decoder.decode(ChapterListItemAtoc.self, from: data!){
                         //print(json)
                         self?.links = json.chapters
                         if (self?.isReversed)! {
                             self?.links.reverse()
+                        }
+                    }
+                    else{
+                        DispatchQueue.main.async {
+                            HUD.flash(.labeledError(title: "服务器编码错误", subtitle: nil), delay: 1)
                         }
                     }
                 }

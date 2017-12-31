@@ -470,7 +470,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0NJ-nY-aBc">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0NJ-nY-aBc">
                                 <rect key="frame" x="40" y="30" width="295" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="15" id="tCq-g3-uw7"/>
@@ -528,8 +528,8 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="28H-L7-ta0">
-                                <rect key="frame" x="10" y="50" width="355" height="21.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="网络错误，请退出重试" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="28H-L7-ta0">
+                                <rect key="frame" x="10" y="50" width="355" height="22"/>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -882,9 +882,11 @@
                         <outlet property="settingBar" destination="1D4-DS-cL4" id="qOW-pa-hSo"/>
                         <outlet property="titleLabel" destination="SZL-l9-prT" id="z9y-2s-Xio"/>
                         <outlet property="topBar" destination="8Eo-xC-adh" id="Qvo-6q-a5e"/>
+                        <segue destination="i1o-eU-7wt" kind="unwind" identifier="returnToBookCase" unwindAction="unwindToMainViewController:" id="DQQ-Mx-TCw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bKr-UD-c3u" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="i1o-eU-7wt" userLabel="Exit" sceneMemberID="exit"/>
                 <tapGestureRecognizer id="weY-xj-CdH">
                     <connections>
                         <action selector="tapClick" destination="gtF-9b-PYY" id="dfU-15-s0e"/>

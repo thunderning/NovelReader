@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PKHUD
 
 class BookReaderViewController: UIViewController {
     @IBOutlet weak var nightButton: UIButton!
@@ -108,11 +109,14 @@ class BookReaderViewController: UIViewController {
                 let s1 = DispatchSemaphore(value: 0)
                 connectService.getBookSources(sender: self, bookId: bookId){ (data,response,error) in
                     if error != nil{
-                        print(error)
+                        DispatchQueue.main.async {
+                            HUD.flash(.labeledError(title: "网络错误", subtitle: "请更改网络状态重试"), delay: 1.0)
+                            self.performSegue(withIdentifier: "returnToBookCase", sender: self)
+                        }
                     }
                     else{
                         let decoder = JSONDecoder()
-                        print(response)
+                        //print(response)
                         if let json = try? decoder.decode([BookSourceItem].self, from: data!){
                             //print(json)
                             //默认选第二个源，因为第一个为正版源
@@ -123,7 +127,14 @@ class BookReaderViewController: UIViewController {
                             bookInfo[0].sourceId = self.bookSourceId
                             SavedModalController.contextSave()
                         }
+                        else{
+                            DispatchQueue.main.async {
+                                HUD.flash(.labeledError(title: "服务器编码错误", subtitle: nil), delay: 1)
+                                self.performSegue(withIdentifier: "returnToBookCase", sender: self)
+                            }
+                        }
                     }
+                    
                     s1.signal()
                 }
                 s1.wait()
@@ -140,12 +151,13 @@ class BookReaderViewController: UIViewController {
     
     func setBookSourceId(bookSourceId:String) -> Void {
         let sourceIdInfo = SavedModalController.getBookSourceInfos(sourceId: bookSourceId)
-        self.bookSourceId = bookSourceId
         if sourceIdInfo.count == 0 {
             let s1 = DispatchSemaphore(value: 0)
             connectService.getChapterListByBookSource(sender: self, bookSourceId: bookSourceId){ (data,response,error) in
                 if error != nil{
-                    print(error)
+                    DispatchQueue.main.async {
+                        HUD.flash(.labeledError(title: "网络错误", subtitle: "请更改网络状态重试"), delay: 1.0)
+                    }
                 }
                 else{
                     let decoder = JSONDecoder()
@@ -164,6 +176,12 @@ class BookReaderViewController: UIViewController {
                             }
                         }
                         SavedModalController.addBookSourceInfo(sourceId: bookSourceId, links: self.links, content: c)
+                        self.bookSourceId = bookSourceId
+                    }
+                    else{
+                        DispatchQueue.main.async {
+                            HUD.flash(.labeledError(title: "服务器编码错误", subtitle: nil), delay: 1)
+                        }
                     }
                 }
                 s1.signal()
@@ -171,6 +189,7 @@ class BookReaderViewController: UIViewController {
             s1.wait()
         }
         else{
+            self.bookSourceId = bookSourceId
             self.links = []
             for i in sourceIdInfo[0].chapterList?.array as! [CoreChapterListInfo]{
                 self.links.append(LinkType(title: i.title!, link: i.link!))
@@ -187,24 +206,30 @@ class BookReaderViewController: UIViewController {
             }
             
         }
-        let bookInfo = SavedModalController.getBookInfos(bookId: bookId)
-        if bookInfo.count == 0 || bookInfo.count > 1{
-            fatalError("书籍\(bookId)没有本地信息")
-        }
-        else{
-            bookInfo[0].sourceId = self.bookSourceId
-            SavedModalController.contextSave()
+        if self.bookSourceId == bookSourceId{
+            let bookInfo = SavedModalController.getBookInfos(bookId: bookId)
+            if bookInfo.count == 0 || bookInfo.count > 1{
+                fatalError("书籍\(bookId)没有本地信息")
+            }
+            else{
+                bookInfo[0].sourceId = self.bookSourceId
+                SavedModalController.contextSave()
+            }
         }
         
     }
     
     func setCurrentChapter(_ currentChapter:Int) -> Void {
-        self.currentChapter = currentChapter
+        
         //若章节缺失，则从api获取
         if chapters[currentChapter] == nil {
             print("第\(currentChapter+1)章缺失")
             let date = Date()
             chapters[currentChapter] = ChapterType(sender: self, link: links[currentChapter].link,title:links[currentChapter].title, attributedKey:attributedKey)
+            if chapters[currentChapter]?.string == "" {
+                chapters[currentChapter] = nil
+                return
+            }
             let millionSecond = NSDate().timeIntervalSince(date)
             print("下载第\(currentChapter+1)章花费\(millionSecond)s")
             var c:[String?] = []
@@ -221,7 +246,7 @@ class BookReaderViewController: UIViewController {
         else{
             chapters[currentChapter]?.checkAttributedKey(attributedKey: attributedKey)
         }
-        
+        self.currentChapter = currentChapter
         let bookInfo = SavedModalController.getBookInfos(bookId: bookId)
         if bookInfo.count == 0 || bookInfo.count > 1{
             fatalError("书籍\(bookId)没有本地信息")
@@ -368,6 +393,11 @@ class BookReaderViewController: UIViewController {
     }
     //缓存全部章节
     @IBAction func downloadAll(_ button:UIButton){
+        let reachability = Reachability()
+        if reachability?.connection == .none {
+            self.downloadingView.text = "无网络连接"
+            return
+        }
         let downloadQ = DispatchQueue(label: "thunderning.download")
         downloadQ.async {
             for i in self.chapters.enumerated(){
@@ -467,7 +497,6 @@ extension BookReaderViewController : UIPageViewControllerDelegate,UIPageViewCont
             return getPageControllerByCurrentPage(currentPage - 1)
         }
     }
-    
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         if currentPage == (chapters[currentChapter]?.content.count)! - 1 {
             if currentChapter != chapters.count - 1{
@@ -475,7 +504,51 @@ extension BookReaderViewController : UIPageViewControllerDelegate,UIPageViewCont
                 return getPageControllerByCurrentPage(0)
             }
             else{
-                return nil
+                let s1 = DispatchSemaphore(value: 0)
+                connectService.getChapterListByBookSource(sender: self, bookSourceId:(self.bookSourceId)!){ (data,response,error) in
+                    if error != nil{
+                        DispatchQueue.main.async {
+                            HUD.flash(.labeledError(title: "网络错误", subtitle: "请更改网络状态重试"), delay: 1.0)
+                        }
+                    }
+                    else{
+                        let decoder = JSONDecoder()
+                        //print(response)
+                        if let json = try? decoder.decode(ChapterListItemAtoc.self, from: data!){
+                            //print(json)
+                            if json.chapters.count != self.links.count{
+                                self.links = json.chapters
+                                for _ in self.chapters.count..<self.links.count{
+                                    self.chapters.append(nil)
+                                }
+                                var c:[String?] = []
+                                for i in self.chapters{
+                                    if i == nil{
+                                        c.append(nil)
+                                    }
+                                    else{
+                                        c.append(i!.string)
+                                    }
+                                }
+                                SavedModalController.updateBookSourceInfo(sourceId: self.bookSourceId!, links: self.links, content: c)
+                            }
+                        }
+                        else{
+                            DispatchQueue.main.async {
+                                HUD.flash(.labeledError(title: "服务器编码错误", subtitle: nil), delay: 1)
+                            }
+                        }
+                    }
+                    s1.signal()
+                }
+                s1.wait()
+                if currentPage == (chapters[currentChapter]?.content.count)! - 1{
+                     return nil
+                }
+                else{
+                    setCurrentChapter(currentChapter + 1)
+                    return getPageControllerByCurrentPage(0)
+                }
             }
         }
         else{

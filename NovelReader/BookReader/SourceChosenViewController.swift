@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PKHUD
 
 class SourceChosenViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
@@ -19,15 +20,23 @@ class SourceChosenViewController: UIViewController {
         let s1 = DispatchSemaphore(value: 0)
         connectService.getBookSources(sender: self, bookId: bookId){ (data,response,error) in
             if error != nil{
-                print(error)
+                DispatchQueue.main.async {
+                    HUD.flash(.labeledError(title: "网络错误", subtitle: "请更改网络状态重试"), delay: 1.0)
+                }
+                self.performSegue(withIdentifier: "returnToReader", sender: self)
             }
             else{
                 let decoder = JSONDecoder()
-                print(response)
+                //print(response)
                 if let json = try? decoder.decode([BookSourceItem].self, from: data!){
                     //print(json)
                     //默认选第二个源，因为第一个为正版源
                     self.sourceItems = json
+                }
+                else{
+                    DispatchQueue.main.async {
+                        HUD.flash(.labeledError(title: "服务器编码错误", subtitle: nil), delay: 1.0)
+                    }
                 }
             }
             s1.signal()
