@@ -163,7 +163,6 @@
 		D99CDDF01FDE21BC00F46414 /* BookRankTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookRankTableViewCell.swift; sourceTree = "<group>"; };
 		D99CDDF21FDE231600F46414 /* BookRankItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookRankItem.swift; sourceTree = "<group>"; };
 		D99CDDF51FDE58F000F46414 /* BookCategoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCategoryItem.swift; sourceTree = "<group>"; };
-		D9DF0BA31FF8C4C900B240B8 /* APESuperHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = APESuperHUD.framework; path = Carthage/Build/iOS/APESuperHUD.framework; sourceTree = "<group>"; };
 		D9DF0BA51FF8C78900B240B8 /* PKHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PKHUD.framework; path = Carthage/Build/iOS/PKHUD.framework; sourceTree = "<group>"; };
 		D9DF0BA71FF8CD4000B240B8 /* Reachablility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachablility.swift; sourceTree = "<group>"; };
 		D9DF0BAD1FF93DA600B240B8 /* TagLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagLabel.swift; sourceTree = "<group>"; };
@@ -210,7 +209,6 @@
 			children = (
 				D94CFC901FFA5DCB00E986FD /* ESPullToRefresh.framework */,
 				D9DF0BA51FF8C78900B240B8 /* PKHUD.framework */,
-				D9DF0BA31FF8C4C900B240B8 /* APESuperHUD.framework */,
 				D99CDDE71FDD809300F46414 /* Segmentio.framework */,
 				D95BF75E1FDAAA43006A2893 /* Chameleon.framework */,
 				D900CEEC1FD7F16600B6420C /* SwiftTheme.framework */,
