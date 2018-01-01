@@ -14,7 +14,7 @@ ____
 2. clone项目到本地
 3. 进入项目目录下，更新第三方库
    ```
-   carthage uodate
+   carthage update
    ```
 4. 编译运行
 ----
