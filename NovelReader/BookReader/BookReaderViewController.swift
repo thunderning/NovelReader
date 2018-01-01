@@ -31,6 +31,7 @@ class BookReaderViewController: UIViewController {
     var isSettingShow:Bool = false
     var isNight = defaultStandard.getUserDefaults(key: ReaderInfo.isNight) as! Bool
     var pageBackColor = UIColor.init(hexString: defaultStandard.getUserDefaults(key: ReaderInfo.backgroundColor) as! String)
+    let cacheQ = DispatchQueue(label: "thunderning.cache")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,6 +63,14 @@ class BookReaderViewController: UIViewController {
         //设置菜单
         
         //测试
+//        let bookInfo = SavedModalController.getBookInfos(bookId: self.bookId)
+//        if bookInfo.count == 0 || bookInfo.count > 1{
+//            fatalError("书籍\(self.bookId)没有本地信息")
+//        }
+//        else{
+//            bookInfo[0].currentChapter = Int32(1895)
+//            SavedModalController.contextSave(info: "currentChapter")
+//        }
         HUD.show(.labeledProgress(title: nil, subtitle: "第一次打开书籍需要较长时间初始化"))
         DispatchQueue.main.async {
             // ...and once it finishes we flash the HUD for a second.
@@ -154,7 +163,7 @@ class BookReaderViewController: UIViewController {
                 }
                 else{
                     let decoder = JSONDecoder()
-                    print(response)
+                    //print(response)
                     if let json = try? decoder.decode(ChapterListItemAtoc.self, from: data!){
                         //print(json)
                         self.links = json.chapters
@@ -212,41 +221,50 @@ class BookReaderViewController: UIViewController {
         
     }
     
+    func getChapter(chapter:Int) -> Void {
+        if self.chapters[chapter] == nil {
+            print("第\(chapter+1)章缺失")
+            let date = Date()
+            self.chapters[chapter] = ChapterType(sender: self, link: self.links[chapter].link,title:self.links[chapter].title, attributedKey:self.attributedKey)
+            if self.chapters[chapter]?.string == "" {
+                self.chapters[chapter] = nil
+                return
+            }
+            let millionSecond = NSDate().timeIntervalSince(date)
+            print("下载第\(chapter+1)章花费\(millionSecond)s")
+            var c:[String?] = []
+            for i in self.chapters{
+                if i == nil{
+                    c.append(nil)
+                }
+                else{
+                    c.append(i!.string)
+                }
+            }
+            SavedModalController.updateBookSourceInfo(sourceId: self.bookSourceId!, links: self.links, content: c)
+        }
+        else{
+            self.chapters[chapter]?.checkAttributedKey(attributedKey: self.attributedKey)
+        }
+    }
+    
     func setCurrentChapter(_ currentChapter:Int) -> Void {
             //若章节缺失，则从api获取
-            if self.chapters[currentChapter] == nil {
-                print("第\(currentChapter+1)章缺失")
-                let date = Date()
-                self.chapters[currentChapter] = ChapterType(sender: self, link: self.links[currentChapter].link,title:self.links[currentChapter].title, attributedKey:self.attributedKey)
-                if self.chapters[currentChapter]?.string == "" {
-                    self.chapters[currentChapter] = nil
-                    return
-                }
-                let millionSecond = NSDate().timeIntervalSince(date)
-                print("下载第\(currentChapter+1)章花费\(millionSecond)s")
-                var c:[String?] = []
-                for i in self.chapters{
-                    if i == nil{
-                        c.append(nil)
-                    }
-                    else{
-                        c.append(i!.string)
-                    }
-                }
-                SavedModalController.updateBookSourceInfo(sourceId: self.bookSourceId!, links: self.links, content: c)
+        getChapter(chapter: currentChapter)
+        if currentChapter != self.chapters.count - 1 {
+            cacheQ.async {
+                self.getChapter(chapter: currentChapter + 1)
             }
-            else{
-                self.chapters[currentChapter]?.checkAttributedKey(attributedKey: self.attributedKey)
-            }
-            self.currentChapter = currentChapter
-            let bookInfo = SavedModalController.getBookInfos(bookId: self.bookId)
-            if bookInfo.count == 0 || bookInfo.count > 1{
-                fatalError("书籍\(self.bookId)没有本地信息")
-            }
-            else{
-                bookInfo[0].currentChapter = Int32(currentChapter)
-                SavedModalController.contextSave(info: "currentChapter")
-            }
+        }
+        self.currentChapter = currentChapter
+        let bookInfo = SavedModalController.getBookInfos(bookId: self.bookId)
+        if bookInfo.count == 0 || bookInfo.count > 1{
+            fatalError("书籍\(self.bookId)没有本地信息")
+        }
+        else{
+            bookInfo[0].currentChapter = Int32(currentChapter)
+            SavedModalController.contextSave(info: "currentChapter")
+        }
     }
     
     func setCurrentPage(_ currentPage:Int = 0) -> Void{
@@ -341,15 +359,15 @@ class BookReaderViewController: UIViewController {
     }
     //行间距相关
     @IBAction func lineSpacingSet1(_ button:UIButton){
-        setLineSpacing(lineSpacing: 1)
-    }
-    
-    @IBAction func lineSpacingSet3(_ button:UIButton){
         setLineSpacing(lineSpacing: 3)
     }
     
-    @IBAction func lineSpacingSet5(_ button:UIButton){
+    @IBAction func lineSpacingSet3(_ button:UIButton){
         setLineSpacing(lineSpacing: 5)
+    }
+    
+    @IBAction func lineSpacingSet5(_ button:UIButton){
+        setLineSpacing(lineSpacing: 7)
     }
     //设置背景色
     @IBAction func setBackgroundColor(_ button:UIButton){
@@ -419,11 +437,11 @@ class BookReaderViewController: UIViewController {
         if data.isReversed {
             data.links.reverse()
         }
-        if data.links.count == self.links.count{
-            self.links = data.links
+        if data.links.count != self.links.count{
             for _ in 0 ..< (data.links.count - self.links.count) {
                 self.chapters.append(nil)
             }
+            self.links = data.links
             var c:[String?] = []
             for i in self.chapters{
                 if i == nil{

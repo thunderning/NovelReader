@@ -77,7 +77,7 @@ class ChapterType: NSObject {
         content.removeAll()
         string = string.replacingOccurrences(of: " ", with: "")
         string = string.replacingOccurrences(of: "\t", with: "")
-        string = string.replacingOccurrences(of: "\n", with: "\n\t")
+        string = string.replacingOccurrences(of: "\n", with: "\n         ")
         var temp = string
         while temp != "" {
             let i = findFirstPage(temp)

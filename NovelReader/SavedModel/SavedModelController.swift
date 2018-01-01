@@ -92,7 +92,7 @@ class SavedModalController {
         object.link = linkType.link
         object.title = linkType.title
         //保存
-        contextSave(info:object.description)
+        //contextSave(info:object.description)
         //
         return object
     }
@@ -103,7 +103,7 @@ class SavedModalController {
         //对象赋值
         object.content = content
         //保存
-        contextSave(info:object.description)
+        //contextSave(info:object.description)
         //
         return object
     }
