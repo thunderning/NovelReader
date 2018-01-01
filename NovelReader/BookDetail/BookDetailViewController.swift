@@ -30,8 +30,13 @@ class BookDetailViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bookId = "548d9c17eb0337ee6df738f5"
-        tableView.backgroundColor = UIColor.flatWhite()
+        //bookId = "548d9c17eb0337ee6df738f5"
+        self.tableView.theme_backgroundColor = themeCellColors
+        self.tableView.cellForRow(at: IndexPath.init(row: 4, section: 0))?.theme_backgroundColor = themeCellColors
+        self.tableView.cellForRow(at: IndexPath.init(row: 3, section: 0))?.theme_backgroundColor = themeCellColors
+        self.tableView.cellForRow(at: IndexPath.init(row: 2, section: 0))?.theme_backgroundColor = themeCellColors
+        self.tableView.cellForRow(at: IndexPath.init(row: 1, section: 0))?.theme_backgroundColor = themeCellColors
+        self.tableView.cellForRow(at: IndexPath.init(row: 0, section: 0))?.theme_backgroundColor = themeCellColors
         tagsView = TagsView.init(frame: CGRect.init(x: 16, y: 10, width: UIScreen.main.bounds.width - 32, height: 80))
         connectService.getBookInformation(sender: self, bookId: self.bookId!){
             (data,response,error) in
@@ -42,7 +47,7 @@ class BookDetailViewController: UITableViewController {
             }
             else{
                 let decoder = JSONDecoder()
-                print(response)
+                //print(response)
                 if let json = try? decoder.decode(BookDetailItem.self, from: data!){
                     //print(json)
                     self.detail = json
@@ -59,6 +64,7 @@ class BookDetailViewController: UITableViewController {
                         }
                     }
                     DispatchQueue.main.async {
+                        self.title = json.title
                         self.titleView.text = json.title
                         self.authorView.text = json.author
                         self.rateView.text = "\(json.rating.score)分 | \(json.rating.count)人评"

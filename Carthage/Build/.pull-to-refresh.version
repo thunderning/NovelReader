@@ -1,0 +1,18 @@
+{
+  "Mac" : [
+
+  ],
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "commitish" : "2.7",
+  "iOS" : [
+    {
+      "name" : "ESPullToRefresh",
+      "hash" : "8fb110b6662456922bd50561ea333932fa9efd0ee4b8352cc887e0d2cb471fad"
+    }
+  ]
+}

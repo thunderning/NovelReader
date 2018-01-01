@@ -53,11 +53,11 @@ class ConnectService: NSObject {
     }
     //根据性别获取排行榜id
     func getRanksByGender(sender:UIViewController,completionHandler:@escaping (_ data:Data?,_ response:URLResponse?,_ error:Error?) -> Void) -> Void {
-        
+        startService(sender: sender, urlstr: API_URL + "ranking/gender", completionHandler: completionHandler)
     }
     //根据排行榜id获取排行榜书籍列表
-    func getRankBooks(sender:UIViewController,completionHandler:@escaping (_ data:Data?,_ response:URLResponse?,_ error:Error?) -> Void) -> Void {
-        
+    func getRankBooks(sender:UIViewController,rankId:String,completionHandler:@escaping (_ data:Data?,_ response:URLResponse?,_ error:Error?) -> Void) -> Void {
+         startService(sender: sender, urlstr: API_URL + "ranking/\(rankId)", completionHandler: completionHandler)
     }
     //获取书单列表
     func getBookLists(sender:UIViewController,completionHandler:@escaping (_ data:Data?,_ response:URLResponse?,_ error:Error?) -> Void) -> Void {
@@ -85,7 +85,7 @@ class ConnectService: NSObject {
     }
     //获取小说信息
     func getBookInformation(sender:UIViewController,bookId:String,completionHandler:@escaping (_ data:Data?,_ response:URLResponse?,_ error:Error?) -> Void) -> Void {
-        print(API_URL + "book/\(bookId)")
+        //print(API_URL + "book/\(bookId)")
         startService(sender: sender, urlstr: API_URL + "book/\(bookId)", completionHandler: completionHandler)
     }
     //获取小说源列表
@@ -114,7 +114,7 @@ class ConnectService: NSObject {
     }
     //获取图片
     func getImage(sender:UIViewController,urlstring:String,completionHandler:@escaping (_ data:Data?,_ response:URLResponse?,_ error:Error?) -> Void) -> Void {
-        print(STATICS_URL + urlstring)
+        //print(STATICS_URL + urlstring)
         startService(sender: sender, urlstr: STATICS_URL + urlstring, completionHandler: completionHandler)
     }
 }

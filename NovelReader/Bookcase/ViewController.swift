@@ -19,14 +19,15 @@ class ViewController: UIViewController {
     let flowingMenuTransitionManager = FlowingMenuTransitionManager()
     override func viewDidLoad() {
         super.viewDidLoad()
+        ThemeManager.setTheme(index: 0)
         // Add the pan screen edge gesture to the current view
         flowingMenuTransitionManager.setInteractivePresentationView(view)
         // Add the delegate to respond to interactive transition events
         flowingMenuTransitionManager.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
-        view.backgroundColor = UIColor.flatWhite().darken(byPercentage: 0.05)
+        view.theme_backgroundColor = themeBackgroundColors
         tableView.tableFooterView = UIView()
-        tableView.backgroundColor = UIColor.flatWhite().darken(byPercentage: 0.05)
+        tableView.theme_backgroundColor = themeBackgroundColors
         tableView.rowHeight = 100
         getBooks()
         upgradeBooks()
@@ -38,9 +39,12 @@ class ViewController: UIViewController {
             self?.tableView.dg_stopLoading()
             }, loadingView: loadingView)
         tableView.dg_setPullToRefreshFillColor(UIColor(red: 205/255.0, green: 233/255.0, blue: 247/255.0, alpha: 0.9))
-        tableView.dg_setPullToRefreshBackgroundColor(UIColor.flatWhite())
+        tableView.dg_setPullToRefreshBackgroundColor(view.backgroundColor!)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        getBooks()
+    }
     func getBooks() -> Void {
         books = SavedModalController.getBookInfos()
         tableView.reloadData()
@@ -62,7 +66,7 @@ class ViewController: UIViewController {
                 }
                 else{
                     let decoder = JSONDecoder()
-                    print(response)
+                    //print(response)
                     if let json = try? decoder.decode(BookDetailItem.self, from: data!){
                         //print(json)
                         i.image = json.cover
@@ -153,7 +157,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate{
             }
             
         }
-        cell?.backgroundColor = UIColor.flatWhite()
+        cell?.theme_backgroundColor = themeCellColors
         return cell!
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {

@@ -42,6 +42,10 @@
 		D9299DD51FF81CF4006026E8 /* ChapterChosenTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9299DD41FF81CF4006026E8 /* ChapterChosenTableViewCell.swift */; };
 		D9299DD71FF846FB006026E8 /* SourceChosenTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9299DD61FF846FB006026E8 /* SourceChosenTableViewCell.swift */; };
 		D9299DD91FF84776006026E8 /* SourceChosenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9299DD81FF84776006026E8 /* SourceChosenViewController.swift */; };
+		D94CFC8B1FFA2B2900E986FD /* BookRankDetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94CFC8A1FFA2B2900E986FD /* BookRankDetailItem.swift */; };
+		D94CFC8D1FFA2CCF00E986FD /* BookRankDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94CFC8C1FFA2CCF00E986FD /* BookRankDetailTableViewController.swift */; };
+		D94CFC8F1FFA2CF800E986FD /* BookRankDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94CFC8E1FFA2CF800E986FD /* BookRankDetailTableViewCell.swift */; };
+		D94CFC911FFA5DCC00E986FD /* ESPullToRefresh.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D94CFC901FFA5DCB00E986FD /* ESPullToRefresh.framework */; };
 		D94D212B1FEC4BE5007E5D47 /* PagesLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94D212A1FEC4BE5007E5D47 /* PagesLabel.swift */; };
 		D94D212D1FECFD5E007E5D47 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94D212C1FECFD5E007E5D47 /* PageViewController.swift */; };
 		D94D21321FED19B6007E5D47 /* ChapterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94D21311FED19B6007E5D47 /* ChapterType.swift */; };
@@ -133,6 +137,10 @@
 		D9299DD41FF81CF4006026E8 /* ChapterChosenTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterChosenTableViewCell.swift; sourceTree = "<group>"; };
 		D9299DD61FF846FB006026E8 /* SourceChosenTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceChosenTableViewCell.swift; sourceTree = "<group>"; };
 		D9299DD81FF84776006026E8 /* SourceChosenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceChosenViewController.swift; sourceTree = "<group>"; };
+		D94CFC8A1FFA2B2900E986FD /* BookRankDetailItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookRankDetailItem.swift; sourceTree = "<group>"; };
+		D94CFC8C1FFA2CCF00E986FD /* BookRankDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookRankDetailTableViewController.swift; sourceTree = "<group>"; };
+		D94CFC8E1FFA2CF800E986FD /* BookRankDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookRankDetailTableViewCell.swift; sourceTree = "<group>"; };
+		D94CFC901FFA5DCB00E986FD /* ESPullToRefresh.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ESPullToRefresh.framework; path = Carthage/Build/iOS/ESPullToRefresh.framework; sourceTree = "<group>"; };
 		D94D212A1FEC4BE5007E5D47 /* PagesLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagesLabel.swift; sourceTree = "<group>"; };
 		D94D212C1FECFD5E007E5D47 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		D94D21311FED19B6007E5D47 /* ChapterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterType.swift; sourceTree = "<group>"; };
@@ -171,6 +179,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D94CFC911FFA5DCC00E986FD /* ESPullToRefresh.framework in Frameworks */,
 				D9DF0BA61FF8C78900B240B8 /* PKHUD.framework in Frameworks */,
 				D99CDDE81FDD809300F46414 /* Segmentio.framework in Frameworks */,
 				D900CEED1FD7F16600B6420C /* SwiftTheme.framework in Frameworks */,
@@ -199,6 +208,7 @@
 		D900CEE81FD7E8C300B6420C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D94CFC901FFA5DCB00E986FD /* ESPullToRefresh.framework */,
 				D9DF0BA51FF8C78900B240B8 /* PKHUD.framework */,
 				D9DF0BA31FF8C4C900B240B8 /* APESuperHUD.framework */,
 				D99CDDE71FDD809300F46414 /* Segmentio.framework */,
@@ -308,6 +318,24 @@
 			path = SavedModel;
 			sourceTree = "<group>";
 		};
+		D94CFC881FFA2AF200E986FD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D99CDDF21FDE231600F46414 /* BookRankItem.swift */,
+				D94CFC8A1FFA2B2900E986FD /* BookRankDetailItem.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D94CFC891FFA2B0200E986FD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D99CDDF01FDE21BC00F46414 /* BookRankTableViewCell.swift */,
+				D94CFC8E1FFA2CF800E986FD /* BookRankDetailTableViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		D94D21301FED199F007E5D47 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
@@ -377,9 +405,10 @@
 		D99CDDE91FDD8BBA00F46414 /* BookRank */ = {
 			isa = PBXGroup;
 			children = (
+				D94CFC891FFA2B0200E986FD /* View */,
+				D94CFC881FFA2AF200E986FD /* Model */,
 				D99CDDEE1FDE1E5000F46414 /* BookRankViewController.swift */,
-				D99CDDF01FDE21BC00F46414 /* BookRankTableViewCell.swift */,
-				D99CDDF21FDE231600F46414 /* BookRankItem.swift */,
+				D94CFC8C1FFA2CCF00E986FD /* BookRankDetailTableViewController.swift */,
 			);
 			path = BookRank;
 			sourceTree = "<group>";
@@ -552,6 +581,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Chameleon.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Segmentio.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/PKHUD.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/ESPullToRefresh.framework",
 			);
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/FlowingMenu.framework",
@@ -559,6 +589,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Chameleon.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Segmentio.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/PKHUD.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/ESPullToRefresh.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -599,8 +630,10 @@
 				D9273FF11FF6695700552254 /* CoreChapterListInfo+CoreDataProperties.swift in Sources */,
 				D9299DD31FF81B73006026E8 /* ChapterChosenViewController.swift in Sources */,
 				D9299DCB1FF817B7006026E8 /* PullToRefreshLoadingViewCircle.swift in Sources */,
+				D94CFC8B1FFA2B2900E986FD /* BookRankDetailItem.swift in Sources */,
 				D9273FEA1FF6695700552254 /* CoreBookSourceInfo+CoreDataClass.swift in Sources */,
 				D9224C9B1FEB948F00904D2F /* BookReaderViewController.swift in Sources */,
+				D94CFC8F1FFA2CF800E986FD /* BookRankDetailTableViewCell.swift in Sources */,
 				D99CDDF11FDE21BC00F46414 /* BookRankTableViewCell.swift in Sources */,
 				D9299DCF1FF81846006026E8 /* PullToRefreshExtensions.swift in Sources */,
 				D9DF0BB01FF955EA00B240B8 /* TagsView.swift in Sources */,
@@ -612,6 +645,7 @@
 				D94D212D1FECFD5E007E5D47 /* PageViewController.swift in Sources */,
 				D904EC241FF4D729008DEB65 /* UserDefaultExtension.swift in Sources */,
 				D94D21361FEFA0ED007E5D47 /* ChapterItem.swift in Sources */,
+				D94CFC8D1FFA2CCF00E986FD /* BookRankDetailTableViewController.swift in Sources */,
 				D9F4AF061FF403210027D9DD /* SettingButton.swift in Sources */,
 				D904EC221FF4CE7F008DEB65 /* StaticLets.swift in Sources */,
 				D98421E61FE94E43009B0B84 /* BookCategoryDetailItem.swift in Sources */,
