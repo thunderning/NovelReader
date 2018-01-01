@@ -69,7 +69,7 @@ class BookRankViewController: UIViewController {
         segmentioView.selectedSegmentioIndex = 0
         segmentioView.valueDidChange = {
             segmentio, segmentIndex in
-            ThemeManager.setTheme(index: 1)
+            //ThemeManager.setTheme(index: 1)
             if segmentIndex == 0 {
                 self.items = (self.itemses?.male)!
             }
